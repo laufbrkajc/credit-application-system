@@ -1,6 +1,5 @@
 package org.nothing.credit.application.system.controller
 
-import org.nothing.credit.application.system.domain.Customer
 import org.nothing.credit.application.system.dto.CustomerDto
 import org.nothing.credit.application.system.dto.CustomerUpdateDto
 import org.nothing.credit.application.system.dto.CustomerView
