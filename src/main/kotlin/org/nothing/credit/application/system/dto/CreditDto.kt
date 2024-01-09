@@ -1,6 +1,5 @@
 package org.nothing.credit.application.system.dto
 
-import jakarta.validation.constraints.Future
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotNull
@@ -12,7 +11,7 @@ import java.time.LocalDate
 
 data class CreditDto(
     @field:NotNull(message = "credit value can not be null.") val creditValue: BigDecimal,
-    @field:DateIsWithin(months = 3) @field:Future val firstInstallmentDate: LocalDate,
+    @field:DateIsWithin(months = 3) val firstInstallmentDate: LocalDate,
     @field:Min(value = 2) @field:Max(value = 48) val installmentsCount: Int,
     @field:NotNull(message = "customer id can not be null.") val customerId: Long
 ) {
