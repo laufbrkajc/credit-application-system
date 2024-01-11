@@ -31,6 +31,7 @@ dependencies {
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client:3.1.2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test:3.1.0")
+	testImplementation("io.mockk:mockk:1.13.4")
 }
 
 tasks.withType<KotlinCompile> {
