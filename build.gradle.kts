@@ -20,16 +20,17 @@ repositories {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-hateoas")
-	implementation("org.springframework.boot:spring-boot-starter-validation")
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.flywaydb:flyway-core")
-	implementation("org.flywaydb:flyway-mysql")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.2.1")
+	implementation("org.springframework.boot:spring-boot-starter-hateoas:3.0.7")
+	implementation("org.springframework.boot:spring-boot-starter-validation:3.0.4")
+	implementation("org.springframework.boot:spring-boot-starter-web:3.1.0")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
+	implementation("org.flywaydb:flyway-core:9.16.0")
+	implementation("org.flywaydb:flyway-mysql:9.16.0")
+	implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
+	runtimeOnly("org.mariadb.jdbc:mariadb-java-client:3.1.2")
+	testImplementation("org.springframework.boot:spring-boot-starter-test:3.1.0")
 }
 
 tasks.withType<KotlinCompile> {
