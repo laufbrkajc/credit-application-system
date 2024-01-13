@@ -3,8 +3,8 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url:
-    username:
+    url: jdbc:mariadb://${DB_HOST}:3306/${DB_NAME}
+    username: ${DB_USER}
     password:
     driver-class-name: org.mariadb.jdbc.Driver
   flyway:
