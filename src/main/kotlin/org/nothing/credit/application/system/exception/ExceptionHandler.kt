@@ -24,10 +24,10 @@ class ExceptionHandler {
 
         return ResponseEntity(
             ExceptionDetails(
-                title = "Bad request! Consult the documentation",
+                title = "Bad Request! Consult the documentation",
                 timestamp = LocalDateTime.now(),
                 status = HttpStatus.BAD_REQUEST.value(),
-                exception = exception.objectName,
+                exception = exception.javaClass.toString(),
                 details = errors
             ), HttpStatus.BAD_REQUEST )
     }
