@@ -1,12 +1,11 @@
 package org.nothing.credit.application.system.controller
 
+import java.math.BigDecimal
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.nothing.credit.application.system.dto.CustomerDto
-import org.nothing.credit.application.system.dto.CustomerUpdateDto
-import org.nothing.credit.application.system.repository.CustomerRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -17,7 +16,10 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.math.BigDecimal
+
+import org.nothing.credit.application.system.dto.CustomerDto
+import org.nothing.credit.application.system.dto.CustomerUpdateDto
+import org.nothing.credit.application.system.repository.CustomerRepository
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -26,10 +28,8 @@ import java.math.BigDecimal
 class CustomerControllerTest {
     @Autowired
     private lateinit var customerRepository: CustomerRepository
-
     @Autowired
     private lateinit var mockMvc: MockMvc
-
     @Autowired
     private lateinit var objectMapper: ObjectMapper
 
