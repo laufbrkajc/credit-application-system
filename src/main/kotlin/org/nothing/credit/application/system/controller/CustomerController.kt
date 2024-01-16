@@ -1,10 +1,6 @@
 package org.nothing.credit.application.system.controller
 
 import jakarta.validation.Valid
-import org.nothing.credit.application.system.dto.CustomerDto
-import org.nothing.credit.application.system.dto.CustomerUpdateDto
-import org.nothing.credit.application.system.dto.CustomerView
-import org.nothing.credit.application.system.service.impl.CustomerService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -17,6 +13,11 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
+
+import org.nothing.credit.application.system.dto.CustomerDto
+import org.nothing.credit.application.system.dto.CustomerUpdateDto
+import org.nothing.credit.application.system.dto.CustomerView
+import org.nothing.credit.application.system.service.impl.CustomerService
 
 @RestController
 @RequestMapping("/api/customers")
