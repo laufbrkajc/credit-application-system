@@ -1,11 +1,9 @@
 package org.nothing.credit.application.system.controller
 
+import java.util.UUID
+import java.util.stream.Collectors
+
 import jakarta.validation.Valid
-import org.nothing.credit.application.system.domain.Credit
-import org.nothing.credit.application.system.dto.CreditDto
-import org.nothing.credit.application.system.dto.CreditView
-import org.nothing.credit.application.system.dto.CreditViewList
-import org.nothing.credit.application.system.service.impl.CreditService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -15,20 +13,24 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestParam
-import java.util.UUID
-import java.util.stream.Collectors
+
+import org.nothing.credit.application.system.domain.Credit
+import org.nothing.credit.application.system.dto.CreditDto
+import org.nothing.credit.application.system.dto.CreditView
+import org.nothing.credit.application.system.dto.CreditViewList
+import org.nothing.credit.application.system.service.impl.CreditService
 
 @RestController
-@RequestMapping("/api/credits/")
+@RequestMapping("/api/credits")
 class CreditController(
     private val creditService: CreditService
 ) {
     @PostMapping
-    fun saveCredit(@RequestBody @Valid creditDto: CreditDto): ResponseEntity<String > {
-        val credit = this.creditService.save(creditDto.toDomainEntity())
+    fun saveCredit(@RequestBody @Valid creditDto: CreditDto): ResponseEntity<CreditView> {
+        val savedCredit = this.creditService.save(creditDto.toDomainEntity())
 
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body("Credit ${credit.creditCode} - Customer ${credit.customer?.firstName} saved!")
+            .body(CreditView(savedCredit))
     }
 
     @GetMapping
