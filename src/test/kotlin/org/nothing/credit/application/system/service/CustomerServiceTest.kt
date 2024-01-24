@@ -1,5 +1,8 @@
 package org.nothing.credit.application.system.service
 
+import java.util.Random
+import java.util.Optional
+
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -10,28 +13,25 @@ import io.mockk.verify
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.nothing.credit.application.system.domain.Address
+import org.springframework.test.context.ActiveProfiles
+
 import org.nothing.credit.application.system.domain.Customer
 import org.nothing.credit.application.system.exception.IdNotFoundException
 import org.nothing.credit.application.system.repository.CustomerRepository
 import org.nothing.credit.application.system.service.impl.CustomerService
-import org.springframework.test.context.ActiveProfiles
-import java.math.BigDecimal
-import java.util.*
+import org.nothing.credit.application.system.util.SampleObjectsBuilder
 
 @ActiveProfiles("test")
 @ExtendWith(MockKExtension::class)
 class CustomerServiceTest {
-    @MockK
-    lateinit var customerRepository: CustomerRepository
-
-    @InjectMockKs
-    lateinit var customerService: CustomerService
+    @MockK lateinit var customerRepository: CustomerRepository
+    @InjectMockKs lateinit var customerService: CustomerService
+    private val testObjectsBuilder = SampleObjectsBuilder()
 
     @Test
     fun `should create customer`() {
         //given
-        val fakeCustomer = buildCustomer()
+        val fakeCustomer = testObjectsBuilder.customerBuilder()
         every { customerRepository.save(any()) } returns fakeCustomer
 
         //when
@@ -47,7 +47,7 @@ class CustomerServiceTest {
     fun `should find customer by id`() {
         //given
         val fakeId: Long = Random().nextLong()
-        val fakeCustomer = buildCustomer(id = fakeId)
+        val fakeCustomer = testObjectsBuilder.customerBuilder(id = fakeId)
         every { customerRepository.findById(fakeId) } returns Optional.of(fakeCustomer)
 
         //when
@@ -78,7 +78,7 @@ class CustomerServiceTest {
     fun `should delete customer by id`() {
         //given
         val fakeId: Long = Random().nextLong()
-        val fakeCustomer = buildCustomer(id = fakeId)
+        val fakeCustomer = testObjectsBuilder.customerBuilder(id = fakeId)
         every { customerRepository.findById(fakeId) } returns Optional.of(fakeCustomer)
         every { customerRepository.delete(fakeCustomer) } just runs
 
@@ -89,25 +89,4 @@ class CustomerServiceTest {
         verify(exactly = 1) { customerRepository.findById(fakeId) }
         verify(exactly = 1) { customerRepository.delete(fakeCustomer) }
     }
-
-    private fun buildCustomer(
-        firstName: String = "Gabriel",
-        lastName: String = "Martins",
-        cpf: String = "01010101010",
-        email: String = "nada@lugarnenhum.com.br",
-        password: String = "senhaForte@123",
-        zipCode: String = "01010101",
-        street: String = "Rua dos Bobos",
-        income: BigDecimal = BigDecimal.valueOf(1010101.1),
-        id: Long = 1L
-    ) = Customer(
-        firstName = firstName,
-        lastName = lastName,
-        cpf = cpf,
-        email = email,
-        password = password,
-        address = Address(zipCode, street),
-        income = income,
-        id = id
-    )
 }

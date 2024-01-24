@@ -1,12 +1,11 @@
 package org.nothing.credit.application.system.controller
 
+import java.math.BigDecimal
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.nothing.credit.application.system.domain.Address
-import org.nothing.credit.application.system.domain.Customer
-import org.nothing.credit.application.system.dto.CreditDto
 import org.nothing.credit.application.system.dto.CreditView
 import org.nothing.credit.application.system.dto.CreditViewList
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,33 +14,24 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
-
-import org.nothing.credit.application.system.repository.CreditRepository
-import org.nothing.credit.application.system.repository.CustomerRepository
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.math.BigDecimal
-import java.time.LocalDate
-import java.time.Month
+
+import org.nothing.credit.application.system.repository.CreditRepository
+import org.nothing.credit.application.system.repository.CustomerRepository
+import org.nothing.credit.application.system.util.SampleObjectsBuilder
 
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @ContextConfiguration
 class CreditControllerTest {
-    @Autowired
-    private lateinit var customerRepository: CustomerRepository
-
-    @Autowired
-    private lateinit var creditRepository: CreditRepository
-
-    @Autowired
-    private lateinit var mockMvc: MockMvc
-
-    @Autowired
-    private lateinit var objectMapper: ObjectMapper
+    @Autowired private lateinit var customerRepository: CustomerRepository
+    @Autowired private lateinit var creditRepository: CreditRepository
+    @Autowired private lateinit var mockMvc: MockMvc
+    @Autowired private lateinit var objectMapper: ObjectMapper
+    private val sampleObjectsBuilder = SampleObjectsBuilder()
 
     companion object {
         const val URL = "/api/credits"
@@ -62,8 +52,8 @@ class CreditControllerTest {
     @Test
     fun `should save a credit and return a 201 status`() {
         //given
-        val testCustomer = customerRepository.save(customerBuilder())
-        val testCreditDto = creditDtoBuilder(testCustomer.id!!)
+        val testCustomer = customerRepository.save(sampleObjectsBuilder.customerBuilder())
+        val testCreditDto = sampleObjectsBuilder.creditDtoBuilder(testCustomer.id!!)
 
         //when
         //then
@@ -85,10 +75,10 @@ class CreditControllerTest {
     @Test
     fun `should find all credits by customerId and return a 200 status`() {
         //given
-        val testCustomer = customerRepository.save(customerBuilder())
-        val testCredit0 = creditRepository.save(creditDtoBuilder(testCustomer.id!!).toDomainEntity())
+        val testCustomer = customerRepository.save(sampleObjectsBuilder.customerBuilder())
+        val testCredit0 = creditRepository.save(sampleObjectsBuilder.creditDtoBuilder(testCustomer.id!!).toDomainEntity())
         val testCredit1 = creditRepository.save(
-            creditDtoBuilder(
+            sampleObjectsBuilder.creditDtoBuilder(
                 testCustomer.id!!,
                 creditValue = BigDecimal.valueOf(1001.02)
             ).toDomainEntity()
@@ -114,9 +104,9 @@ class CreditControllerTest {
 
     @Test
     fun `should find a credit by its id and return a status 200`() {
-        val testCustomer = customerRepository.save(customerBuilder())
-        val testCredit0 = creditDtoBuilder(testCustomer.id!!).toDomainEntity()
-        val testCredit1 = creditDtoBuilder(
+        val testCustomer = customerRepository.save(sampleObjectsBuilder.customerBuilder())
+        val testCredit0 = sampleObjectsBuilder.creditDtoBuilder(testCustomer.id!!).toDomainEntity()
+        val testCredit1 = sampleObjectsBuilder.creditDtoBuilder(
             testCustomer.id!!,
             creditValue = BigDecimal.valueOf(1001.02)
         ).toDomainEntity()
@@ -139,35 +129,4 @@ class CreditControllerTest {
             print()
         }
     }
-
-    private fun customerBuilder(
-        firstName: String = "John",
-        lastName: String = "Doe",
-        cpf: String = "01010101010",
-        email: String = "nao-tenho@algumemail.com",
-        password: String = "thisIsUmaForte@Senha#098",
-        income: BigDecimal = BigDecimal.valueOf(1.01),
-        zipCode: String = "01234-567",
-        street: String = "Baker Street 221B",
-    ) = Customer(
-        firstName = firstName,
-        lastName = lastName,
-        cpf = cpf,
-        email = email,
-        password = password,
-        income = income,
-        address = Address(zipCode, street),
-    )
-
-    private fun creditDtoBuilder(
-        customerId: Long,
-        creditValue: BigDecimal = BigDecimal.valueOf(10000.09),
-        firstInstallmentDate: LocalDate = LocalDate.of(2024, Month.FEBRUARY, 20),
-        installmentsCount: Int = 32,
-    ) = CreditDto(
-        creditValue = creditValue,
-        firstInstallmentDate = firstInstallmentDate,
-        installmentsCount = installmentsCount,
-        customerId = customerId
-    )
 }
