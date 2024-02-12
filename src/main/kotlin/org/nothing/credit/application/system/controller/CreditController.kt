@@ -39,7 +39,7 @@ class CreditController(
             .map { credit: Credit -> CreditViewList(credit) }
             .collect(Collectors.toList())
 
-        return ResponseEntity.status(HttpStatus.OK).body(creditViewList)
+        return ResponseEntity.status(if (creditViewList.isEmpty()) HttpStatus.NO_CONTENT else HttpStatus.OK).body(creditViewList)
     }
 
     @GetMapping("/{creditCode}")
